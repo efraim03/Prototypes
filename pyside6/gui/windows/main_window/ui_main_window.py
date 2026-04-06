@@ -1,6 +1,7 @@
 # Importando o módulo qt_core para acessar as classes do PySide6
 from qt_core import *
 
+# Importando as classes criadas para os widgets personalizados e as páginas da interface gráfica
 from widgets.py_pushbutton import PyPushButton
 from pages.ui_login_page import LoginPage
 from pages.ui_dashboard_page import DashboardPage
@@ -8,7 +9,11 @@ from pages.ui_dashboard_page import DashboardPage
 
 # Classe que irá receber todos os widgets da interface gráfica do MainWindow
 class Ui_MainWindow(object):
+
+    # Estrutura padrão Qt Designer
     def setup_ui(self, parent):
+
+        # Verifica se o widget pai da interface gráfica tem um nome definido, caso contrário, define o nome como "MainWindow"
         if not parent.objectName():
             parent.setObjectName("MainWindow")
         
@@ -24,7 +29,7 @@ class Ui_MainWindow(object):
         self.main_layout.setContentsMargins(0, 0, 0, 0)
         self.main_layout.setSpacing(0)
 
-        # Menu lateral
+        # Cria o widget do menu lateral 
         self.left_menu = QFrame()
         self.left_menu.setStyleSheet("background-color: hsl(145, 28%, 18%)")
         self.left_menu.setMaximumWidth(50)
@@ -45,18 +50,16 @@ class Ui_MainWindow(object):
         self.left_menu_top_layout.setSpacing(0)
 
         # Cria os botões de navegação da parte superior do menu lateral
-        self.top_toggle_btn = PyPushButton("Ocultar Menu")
-        self.top_btn1 = PyPushButton(
+        self.toggle_btn = PyPushButton("Ocultar Menu")
+        self.login_btn = PyPushButton(
             text = "Página de Login",
-            is_active = True
-        )
-        self.top_btn2 = PyPushButton("Dashboard")
+            is_active = True)
+        self.dash_btn = PyPushButton("Dashboard")
         
-
         # Adiciona os botões de navegação ao layout da parte superior do menu lateral
-        self.left_menu_top_layout.addWidget(self.top_toggle_btn)
-        self.left_menu_top_layout.addWidget(self.top_btn1)
-        self.left_menu_top_layout.addWidget(self.top_btn2)
+        self.left_menu_top_layout.addWidget(self.toggle_btn)
+        self.left_menu_top_layout.addWidget(self.login_btn)
+        self.left_menu_top_layout.addWidget(self.dash_btn)
 
         # Espaçador do menu lateral
         self.left_menu_spacer = QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Expanding)
@@ -65,16 +68,16 @@ class Ui_MainWindow(object):
         self.left_menu_bottom_frame = QFrame()
         self.left_menu_bottom_frame.setMinimumHeight(50)
 
-        # Prepara o layout da parte inferior do menu lateral, que irá conter os botões de configuração e de logout
+        # Prepara o layout da parte inferior do menu lateral, que irá conter o botão de configuração
         self.left_menu_bottom_layout = QVBoxLayout(self.left_menu_bottom_frame)
         self.left_menu_bottom_layout.setContentsMargins(0, 0, 0, 0)
         self.left_menu_bottom_layout.setSpacing(0)
 
         # Cria o botão de configurações da parte inferior do menu lateral
-        self.bottom_btn = PyPushButton("Configurações")
+        self.settings_btn = PyPushButton("Configurações")
 
         # Adiciona o botão de configurações ao layout da parte inferior do menu lateral
-        self.left_menu_bottom_layout.addWidget(self.bottom_btn)
+        self.left_menu_bottom_layout.addWidget(self.settings_btn)
 
         # Label do menu lateral, que irá conter a versão da aplicação
         self.left_menu_label = QLabel("v1.0.0")
@@ -140,9 +143,6 @@ class Ui_MainWindow(object):
         self.page_content.addWidget(self.page1)
         self.page_content.addWidget(self.page2)
         self.page_content.addWidget(self.page3)
-
-        # Altera a página atual
-        self.page_content.setCurrentWidget(self.page1)
 
         # Barra inferior
         self.bottom_bar = QFrame()

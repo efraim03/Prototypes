@@ -2,14 +2,17 @@ import streamlit as st
 import pandas as pd
 import altair as alt
 
+# Nome da página e ícone
 st.set_page_config(page_title="BioSensIA", page_icon="🧬")
 
+# Título e descrição da aplicação
 st.markdown("""
             
 # Bem vindo ao BioSensIA!
 ### Este é um protótipo de aplicação para um sistema de prospecção de bioativos para biossensores enzimáticos.
  """)
 
+# Upload de arquivo para análise
 file = st.file_uploader("Faça upload da sua base de dados", type=["csv", "xlsx"])
 
 #verifica se teve upload de arquivo
@@ -18,7 +21,7 @@ if file:
     #leitura do arquivo
     reader = pd.read_csv(file)
 
-    #expandir para mostrar os dados brutos
+    #expandir para mostrar os dados brutos na forma de tabela, sem o índice
     exp = st.expander("Dados Brutos")
     exp.dataframe(reader, hide_index=True)
 
@@ -29,7 +32,7 @@ if file:
     exp2 = st.expander("Distribuição de Bioatividade")
     exp2.write(bioatividade)
 
-    #tabelas de bioativos e não bioativos em abas
+    #tabelas de bioativos e não bioativos em abas e retira a coluna de bioatividade para não poluir a visualização
     tab_1, tab_2 = exp2.tabs(["Bioativas", "Não Bioativas"])
     with tab_1:
         bioativas_view = bioativas.drop(columns=["bioactivity"])
@@ -45,7 +48,7 @@ if file:
         0: "Não Bioativa"
     })
 
-    #gráfico interativo de logP x peso molecular, colorido por classe
+    #gráfico de logP x peso molecular, colorido por classe
     exp3 = st.expander("Relação LogP x Peso Molecular")
     grafico = alt.Chart(plot_df).mark_circle(size=80).encode(
         x=alt.X(
@@ -77,4 +80,6 @@ if file:
 
     #tornar o gráfico interativo para permitir zoom e pan
     grafico_interativo = grafico.interactive()
+
+    #coloca o gráfico interativo no expander com largura total do container
     exp3.altair_chart(grafico_interativo, use_container_width=True)

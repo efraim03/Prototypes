@@ -3,6 +3,8 @@ import os
 from qt_core import *
 
 class PyPushButton(QPushButton):
+
+    # Define parâmetros personalizáveis para o botão, como texto, cores, tamanhos e estado ativo
     def __init__(
         self,
         text="",
@@ -23,7 +25,7 @@ class PyPushButton(QPushButton):
         self.setMaximumHeight(height)
         self.setMinimumHeight(height)
         self.setCursor(Qt.PointingHandCursor)
-
+        
         self.minimum_width = minimum_width
         self.text_padding = text_padding
         self.text_color = text_color
@@ -33,7 +35,8 @@ class PyPushButton(QPushButton):
         self.btn_pressed = btn_pressed
         self.is_active = is_active
 
-        self.set_style(
+        # Aplica o estilo inicial do botão com base nos parâmetros fornecidos
+        self.set_style( 
             text_padding=self.text_padding,
             text_color=self.text_color,
             btn_color=self.btn_color,
@@ -42,16 +45,18 @@ class PyPushButton(QPushButton):
             is_active=self.is_active
         )
 
-    def set_active(self, is_active_menu):
+    # Função para atualizar o estilo do botão com base no estado ativo
+    def set_active(self, is_active_menu): 
         self.set_style(
             text_padding=self.text_padding,
             text_color=self.text_color,
             btn_color=self.btn_color,
             btn_hover=self.btn_hover,
             btn_pressed=self.btn_pressed,
-            is_active=is_active_menu
+            is_active=is_active_menu # Retorna true ou false
         )
 
+    # Método que irá atualizar o estilo do botão com base no is_active
     def set_style(
         self,
         text_padding=55,
@@ -86,4 +91,4 @@ class PyPushButton(QPushButton):
         if not is_active:
             self.setStyleSheet(style)
         else:
-            self.setStyleSheet(style + active_style)
+            self.setStyleSheet(style + active_style) 

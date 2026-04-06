@@ -20,31 +20,31 @@ class MainWindow(QMainWindow):
         self.ui.setup_ui(self)
 
         # Conecta o clique do botão de toggle do menu lateral à função toggle_btn para mostrar ou ocultar o menu lateral
-        self.ui.top_toggle_btn.clicked.connect(self.toggle_btn)
+        self.ui.toggle_btn.clicked.connect(self.toggle_btn)
 
         # Conecta os cliques dos botôes de navegação às suas paginas correspondentes
-        self.ui.top_btn1.clicked.connect(self.show_page1)
-        self.ui.top_btn2.clicked.connect(self.show_page2)
-        self.ui.bottom_btn.clicked.connect(self.show_page3)
+        self.ui.login_btn.clicked.connect(self.show_page1)
+        self.ui.dash_btn.clicked.connect(self.show_page2)
+        self.ui.settings_btn.clicked.connect(self.show_page3)
 
     # Funções para mostrar as páginas correspondentes aos botões de navegação
     def show_page1(self):
         self.ui.page_content.setCurrentWidget(self.ui.page1)
-        self.ui.top_btn1.set_active(True)
-        self.ui.top_btn2.set_active(False)
-        self.ui.bottom_btn.set_active(False)
-    
+        self.ui.login_btn.set_active(True)
+        self.ui.dash_btn.set_active(False)
+        self.ui.settings_btn.set_active(False)
+
     def show_page2(self):
         self.ui.page_content.setCurrentWidget(self.ui.page2)
-        self.ui.top_btn2.set_active(True)
-        self.ui.top_btn1.set_active(False)
-        self.ui.bottom_btn.set_active(False)
+        self.ui.dash_btn.set_active(True)
+        self.ui.login_btn.set_active(False)
+        self.ui.settings_btn.set_active(False)
 
     def show_page3(self):
         self.ui.page_content.setCurrentWidget(self.ui.page3)
-        self.ui.bottom_btn.set_active(True)
-        self.ui.top_btn1.set_active(False)
-        self.ui.top_btn2.set_active(False)
+        self.ui.settings_btn.set_active(True)
+        self.ui.login_btn.set_active(False)
+        self.ui.dash_btn.set_active(False)
 
         # Exibe a janela principal
         self.show()
@@ -57,7 +57,8 @@ class MainWindow(QMainWindow):
         else:
             width = 50    
 
-        self.animation = QPropertyAnimation(self.ui.left_menu, b"minimumWidth")
+        # Cria uma animação para a propriedade "minimumWidth" do menu lateral
+        self.animation = QPropertyAnimation(self.ui.left_menu, b"minimumWidth") 
         self.animation.setDuration(300)
         self.animation.setStartValue(menu_width)
         self.animation.setEndValue(width)

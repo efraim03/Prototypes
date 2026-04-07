@@ -50,7 +50,7 @@ class DashboardPage(QWidget):
 
         self.buttons_layout.addWidget(self.btn_gen)
         self.buttons_layout.addWidget(self.btn_hide)
-        self.header_container.addWidget(self.title, alignment=Qt.AlignCenter)
+        self.header_container.addWidget(self.title)
         self.header_container.addLayout(self.buttons_layout)
 
         # --- Corpo do Dashboard (Layout Horizontal) ---
@@ -70,7 +70,7 @@ class DashboardPage(QWidget):
         # Coluna da Direita: Gráfico de Barras
         self.content_layout.addLayout(self.left_column, 1) 
         self.content_layout.addWidget(self.canvas_bar, 1)   
-
+        
         self.main_layout.addLayout(self.header_container)
         self.main_layout.addLayout(self.content_layout)
         self.main_layout.addStretch() 
@@ -82,7 +82,7 @@ class DashboardPage(QWidget):
         self.table.setRowCount(len(dados)) # Seta o número de linhas da tabela para o número de dados gerados
         self.table.setColumnCount(2) # Seta o número de colunas da tabela para 2 (Molécula e Classificação)
         self.table.setHorizontalHeaderLabels(["Molécula", "Classificação"])
-        for row, (mol, classe) in enumerate(dados): # (O que esse loop faz?)
+        for row, (mol, classe) in enumerate(dados): 
             self.table.setItem(row, 0, QTableWidgetItem(mol))
             self.table.setItem(row, 1, QTableWidgetItem(classe))
         self.table.show()

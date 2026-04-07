@@ -1,5 +1,3 @@
-import os
-
 from qt_core import *
 
 class PyPushButton(QPushButton):
@@ -25,7 +23,9 @@ class PyPushButton(QPushButton):
         self.setMaximumHeight(height)
         self.setMinimumHeight(height)
         self.setCursor(Qt.PointingHandCursor)
-        
+
+        self.icon_path = icon_path
+
         self.minimum_width = minimum_width
         self.text_padding = text_padding
         self.text_color = text_color
@@ -35,8 +35,13 @@ class PyPushButton(QPushButton):
         self.btn_pressed = btn_pressed
         self.is_active = is_active
 
+        # Configura o ícone do botão, se um caminho de ícone for fornecido
+        if self.icon_path:
+            self.setIcon(QIcon(self.icon_path))
+            self.setIconSize(QSize(22, 22))  # tamanho padrão elegante
+
         # Aplica o estilo inicial do botão com base nos parâmetros fornecidos
-        self.set_style( 
+        self.set_style(
             text_padding=self.text_padding,
             text_color=self.text_color,
             btn_color=self.btn_color,
@@ -46,7 +51,8 @@ class PyPushButton(QPushButton):
         )
 
     # Função para atualizar o estilo do botão com base no estado ativo
-    def set_active(self, is_active_menu): 
+
+    def set_active(self, is_active_menu):
         self.set_style(
             text_padding=self.text_padding,
             text_color=self.text_color,
@@ -87,8 +93,8 @@ class PyPushButton(QPushButton):
             border-right: 5px solid hsl(145, 25%, 10%);
         }}
         """
-        
+
         if not is_active:
             self.setStyleSheet(style)
         else:
-            self.setStyleSheet(style + active_style) 
+            self.setStyleSheet(style + active_style)

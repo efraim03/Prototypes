@@ -13,7 +13,7 @@ st.markdown("""
  """)
 
 # Upload de arquivo para análise
-file = st.file_uploader("Faça upload da sua base de dados", type=["csv", "xlsx"])
+file = st.file_uploader("Faça upload do seu conjunto de dados", type=["csv", "xlsx"])
 
 #verifica se teve upload de arquivo
 if file:

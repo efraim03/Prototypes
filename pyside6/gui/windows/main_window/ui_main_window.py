@@ -50,11 +50,21 @@ class Ui_MainWindow(object):
         self.left_menu_top_layout.setSpacing(0)
 
         # Cria os botões de navegação da parte superior do menu lateral
-        self.toggle_btn = PyPushButton("Ocultar Menu")
+        self.toggle_btn = PyPushButton(
+            text = "Ocultar Menu",
+            icon_path = "prototypes/pyside6/icons/menu-svgrepo-com.svg",
+            
+        )
+
         self.login_btn = PyPushButton(
             text = "Página de Login",
+            icon_path = "prototypes/pyside6/icons/login-svgrepo-com.svg",
             is_active = True)
-        self.dash_btn = PyPushButton("Dashboard")
+        
+        self.dash_btn = PyPushButton(
+            text = "Dashboard",
+            icon_path = "prototypes/pyside6/icons/dashboard-svgrepo-com.svg"
+        )
         
         # Adiciona os botões de navegação ao layout da parte superior do menu lateral
         self.left_menu_top_layout.addWidget(self.toggle_btn)
@@ -74,7 +84,10 @@ class Ui_MainWindow(object):
         self.left_menu_bottom_layout.setSpacing(0)
 
         # Cria o botão de configurações da parte inferior do menu lateral
-        self.settings_btn = PyPushButton("Configurações")
+        self.settings_btn = PyPushButton(
+            text = "Configurações",
+            icon_path = "prototypes/pyside6/icons/settings-svgrepo-com.svg"
+        )
 
         # Adiciona o botão de configurações ao layout da parte inferior do menu lateral
         self.left_menu_bottom_layout.addWidget(self.settings_btn)

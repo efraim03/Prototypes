@@ -5,6 +5,7 @@ from qt_core import *
 from widgets.py_pushbutton import PyPushButton
 from pages.ui_login_page import LoginPage
 from pages.ui_dashboard_page import DashboardPage
+from pages.ui_settings_page import SettingsPage
 
 
 # Classe que irá receber todos os widgets da interface gráfica do MainWindow
@@ -146,11 +147,7 @@ class Ui_MainWindow(object):
         self.page2 = DashboardPage()
 
         # Cria a página de configurações, o layout da página, o texto da página e adiciona o texto ao layout da página
-        self.page3 = QWidget()
-        layout3 = QVBoxLayout(self.page3)
-        self.page_config = QLabel("Configurações")
-        layout3.addWidget(self.page_config)
-        layout3.setAlignment(Qt.AlignCenter)
+        self.page3 = SettingsPage()
 
         # Adiciona as páginas de login, dashboard e configurações ao conteúdo da página
         self.page_content.addWidget(self.page1)

@@ -51,7 +51,6 @@ class PyPushButton(QPushButton):
         )
 
     # Função para atualizar o estilo do botão com base no estado ativo
-
     def set_active(self, is_active_menu):
         self.set_style(
             text_padding=self.text_padding,

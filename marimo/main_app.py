@@ -30,7 +30,7 @@ def _(file, mo, pd):
     else:
         upload = file.value[0]          # pega o objeto
         file_bytes = upload.contents    # pega os bytes
-        df = pd.read_csv(io.BytesIO(file_bytes))
+        df = pd.read_csv(io.BytesIO(file_bytes))  # BytesIO converte os bytes em um arquivo momentâneo que o pandas reconhece
 
     df
     return (df,)
@@ -49,6 +49,8 @@ def _(mo):
 
 @app.cell
 def _(col_input, df, mo):
+    _ = col_input.value      # reatividade forçada para a coluna
+
     slider = None
     col = col_input.value
 
@@ -65,7 +67,7 @@ def _(col_input, df, mo):
 
 @app.cell
 def _(col, df, slider):
-    _ = slider.value if slider is not None else None
+    _ = slider.value if slider is not None else None     # reatividade forçada para o slider
 
     if df is not None:
         if slider is not None and col in df.columns:
@@ -73,19 +75,19 @@ def _(col, df, slider):
         else:
             filtered_df = df
 
-    filtered_df.head(20).reset_index(drop=True)
+    filtered_df.reset_index(drop=True)
     return
 
 
 @app.cell
 def _(col, df, plt, slider):
-    _ = slider.value if slider is not None else None
+    _ = slider.value if slider is not None else None     # reatividade forçada para o slider
 
     if df is not None and slider is not None and col in df.columns:
         _df_plot = df[df[col] <= slider.value]
 
-        fig, ax = plt.subplots()
-        ax.hist(_df_plot[col], bins=20)
+        fig, ax = plt.subplots()        # Onde fig cria a tela e ax o gráfico (eixos)
+        ax.hist(_df_plot[col], bins=20) # Define o gráfico como um histograma e divide os dados em 20 grupos
         ax.set_title(f"Distribuição de {col}")
         ax.set_xlabel(col)
         ax.set_ylabel("Frequência")

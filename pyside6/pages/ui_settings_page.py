@@ -1,10 +1,13 @@
 from qt_core import *
+from .tabs_dash.data_tab import DataTab
+from .analysis_tab import AnalysisTab
 import pandas as pd
 
 class SettingsPage(QWidget):
     def __init__(self):
         super().__init__()
 
+# --- Atributos ---
         # --- Layout Principal ---
         self.main_layout = QVBoxLayout(self)
         self.main_layout.setContentsMargins(20, 20, 20, 20)
@@ -16,7 +19,7 @@ class SettingsPage(QWidget):
         self.title = QLabel("Dashboard de Prospecção")
         self.title.setStyleSheet("font-size: 18px; font-weight: bold; color: #e0eee0; margin-bottom: 10px;")
 
-        self.upload_layout = QVBoxLayout()
+        self.upload_layout = QHBoxLayout()
         self.upload_layout.setAlignment(Qt.AlignCenter)
         self.upload_layout.setSpacing(15)
 
@@ -31,30 +34,75 @@ class SettingsPage(QWidget):
             QPushButton:hover { background-color: #3d7a55; }
         """
         self.upload_btn.setStyleSheet(style_btn)
-        self.upload_btn.clicked.connect(self.upload_csv)
+        self.upload_btn.clicked.connect(self.handle_upload)
 
-        self.upload_layout.addWidget(self.upload_msg)
+        self.hide_btn = QPushButton("Ocultar Dados")
+        self.hide_btn.setCursor(Qt.PointingHandCursor)
+        self.hide_btn.setStyleSheet(style_btn)
+        self.hide_btn.clicked.connect(self.handle_hide)
+        self.hide_btn.hide()   # só aparece depois do upload
+
         self.upload_layout.addWidget(self.upload_btn)
+        self.upload_layout.addWidget(self.hide_btn)
         self.header_container.addWidget(self.title)
+        self.header_container.addWidget(self.upload_msg)
         self.header_container.addLayout(self.upload_layout)
 
-        # Conteúdo do Dashboard
-        self.dash_layout = QHBoxLayout()
-
-        self.table_layout = QVBoxLayout()
-        self.table_layout.setSpacing(20)
-
-        self.table = QTableWidget()
-        self.table.hide()
-        self.table.setStyleSheet("background-color: #1a2e24; color: #e0eee0; border-radius: 10px;")
-
-        self.table_layout.addWidget(self.table)
-        self.dash_layout.addLayout(self.table_layout)
-
         self.main_layout.addLayout(self.header_container)
-        self.main_layout.addLayout(self.dash_layout)
 
-    def upload_csv(self):
+        # Criação das abas do dashboard
+        self.tabs = QTabWidget()
+        self.tabs.setContentsMargins(0, 0, 0, 0)
+        self.tabs.setStyleSheet("""
+            QTabWidget::pane {
+                border: none;
+            }
+
+            /* Aba normal */
+            QTabBar::tab {
+                background: transparent;
+                color: #88aa88;
+                padding: 6px 12px;
+                margin-right: 10px;
+                border: none;
+                font-size: 11px;
+            }
+
+            /* Hover */
+            QTabBar::tab:hover {
+                color: #cdeccd;
+            }
+
+            /* Aba selecionada */
+            QTabBar::tab:selected {
+                color: #e0eee0;
+                border-bottom: 2px solid #3d7a55;
+            }
+
+            /* Remove aquele "offset" feio */
+            QTabBar::tab:!selected {
+            margin-top: 2px;
+            }
+        """)
+        
+    # --- Aba de Dados ---
+        # Importando a classe DataTab
+        self.tab_data = DataTab()
+        self.tab_data.setStyleSheet("background-color: transparent;")
+
+        self.tabs.addTab(self.tab_data, "Dados")
+
+        self.tab_analysis = AnalysisTab()
+        self.tab_analysis.setStyleSheet("background-color: transparent;")
+
+        self.tabs.addTab(self.tab_analysis, "Análise")
+
+        # Adiciona as abas ao layout principal
+        self.main_layout.addWidget(self.tabs)
+
+# --- Métodos ---
+    # --- Manipulação do upload e exibição dos dados ---
+    def handle_upload(self):
         file_path, _ = QFileDialog.getOpenFileName(
             self,
             "Selecionar CSV",
@@ -64,17 +112,20 @@ class SettingsPage(QWidget):
 
         if file_path:
             df = pd.read_csv(file_path)
-            self.display_data(df)
 
-    def display_data(self, df):
-        self.table.setRowCount(df.shape[0])
-        self.table.setColumnCount(df.shape[1])
+            self.df = df
 
-        self.table.setHorizontalHeaderLabels(df.columns)
+            # envia os dados para as abas
+            self.tab_data.display_data(self.df)
+            self.tab_data.display_scatter(self.df)
+            self.tab_analysis.load_data(self.df)
 
-        for row in range(df.shape[0]):
-            for col in range(df.shape[1]):
-                value = str(df.iat[row, col])
-                self.table.setItem(row, col, QTableWidgetItem(value))
+            self.hide_btn.show()
 
-        self.table.show()
+    # --- Manipulação da ocultação dos dados ---
+    def handle_hide(self):
+        self.tab_data.hide_data()
+        self.hide_btn.hide()
+        
+        
+    
